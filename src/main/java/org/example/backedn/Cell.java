@@ -1,11 +1,11 @@
 package org.example.backedn;
 
 public class Cell {
-    private double xPosition;
-    private double yPosition;
-    private double Size;
-    private Ship shipReff = null;
-    private Boolean isClicked = false;
+    protected double xPosition;
+    protected double yPosition;
+    protected double Size;
+    protected Ship shipReff = null;
+    protected Boolean isClicked = false;
     public Cell(double x, double y, double size){
         this.xPosition = x;
         this.yPosition = y;
