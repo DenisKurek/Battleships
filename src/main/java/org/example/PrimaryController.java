@@ -41,10 +41,16 @@ public class PrimaryController {
     private void pressed(MouseEvent e , Rectangle r){
         r.setFill(Color.GREEN);
     }
+
     private void dragged(MouseEvent e ){
        Node node = e.getPickResult().getIntersectedNode();
-       Rectangle rectangle = (Rectangle)node;
+       try {
+           Rectangle rectangle = (Rectangle) node;
            rectangle.setFill(Color.YELLOW);
+       }
+       catch (Exception ignored){
+
+       }
 
     }
     private void dropped(MouseEvent e , Rectangle r){
