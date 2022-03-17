@@ -9,11 +9,11 @@ import java.util.List;
 public class FxShip extends Ship {
 
     Rectangle rectangle;
-    public FxShip(double x,double y,double width, double length ) {
-        super(x,y,width,length);
-        rectangle = new Rectangle(xPosition,yPosition,width,length);
 
+    public FxShip(int x, int y, int size) {
+        super(x, y, size);
     }
+
     public Rectangle getRectangle(){
         return rectangle;
     }

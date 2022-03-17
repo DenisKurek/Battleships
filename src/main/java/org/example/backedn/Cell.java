@@ -6,6 +6,9 @@ public class Cell {
     protected double Size;
     protected Ship shipReff = null;
     protected Boolean isClicked = false;
+    public enum State {SHIP , NEAR_SHIP, SEA}
+    State state = State.SEA;
+
     public Cell(double x, double y, double size){
         this.xPosition = x;
         this.yPosition = y;
@@ -23,6 +26,12 @@ public class Cell {
     }
     public boolean ifClicked(){
         return isClicked;
+    }
+    public void setState(State state){
+        this.state = state;
+    }
+    public State  getState(){
+        return state;
     }
 
     public double getX() {

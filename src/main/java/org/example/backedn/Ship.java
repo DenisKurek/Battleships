@@ -5,34 +5,41 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Ship {
-    protected double xPosition=0;
-    protected double yPosition=0;
-    protected double length;
-    protected double width;
+    protected int x=0;
+    protected int y=0;
+    protected int size;
+    private Boolean vertical=false;
     protected boolean isDestroyed = false;
 
-    public Ship(double x,double y,double width, double length ){
-        this.xPosition=x;
-        this.yPosition=y;
-        this.length = length;
-        this.width = width;
+    public Ship(int x,int y,int size){
+        this.x=x;
+        this.y=y;
+        this.size = size;
     }
 
-    public void setX(double Position) {
-        this.xPosition = Position;
+    public void setX(int Position) {
+        this.x = Position;
     }
-    public void setY(double Position) {
-        this.yPosition = Position;
+    public void setY(int Position) {
+        this.y = Position;
     }
-    public double getX() {
-        return xPosition;
+    public int getX() {
+        return x;
     }
-    public double getY() {
-        return yPosition;
+    public int getY() {
+        return y;
     }
-    public void setPosition(double x, double y) {
-        this.xPosition = x;
-        this.yPosition = y;
+    public int getSize(){return size;}
+    public Boolean isVertical() {return vertical;}
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+    public void setVertical(){
+        vertical = true;
+    }
+    public void setHorizontal(){
+        vertical = false;
     }
 
 }
