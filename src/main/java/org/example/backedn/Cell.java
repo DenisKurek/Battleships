@@ -6,6 +6,10 @@ public class Cell {
     protected double Size;
     protected Ship shipReff = null;
     protected Boolean isClicked = false;
+    private int nearShipsCount=0;
+    public int getNearShipsCount(){
+        return nearShipsCount;
+    }
     public enum State {SHIP , NEAR_SHIP, SEA}
     State state = State.SEA;
 
@@ -28,7 +32,21 @@ public class Cell {
         return isClicked;
     }
     public void setState(State state){
-        this.state = state;
+        if(state!=State.NEAR_SHIP){
+            nearShipsCount--;
+            if(nearShipsCount<0){
+                nearShipsCount=0;
+            }
+            if(nearShipsCount<=0){
+                this.state = state;
+            }
+        }
+        else{
+            if(state == State.NEAR_SHIP) {
+                nearShipsCount++;
+            }
+            this.state = state;
+        }
     }
     public State  getState(){
         return state;

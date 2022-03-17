@@ -1,14 +1,8 @@
 package org.example;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import org.example.backedn.Game;
-import org.example.fxImplementation.FxBoard;
-import org.example.fxImplementation.FxCell;
 import org.example.fxImplementation.GameDrawer;
 
 public class PrimaryController {
@@ -22,6 +16,7 @@ public class PrimaryController {
         game.runGame();
         GameDrawer gameDrawer = new GameDrawer(game, pane);
         gameDrawer.DrawBoard();
+        gameDrawer.DrawShips();
     }
 
     /*private void pressed(MouseEvent e , FxCell cell){

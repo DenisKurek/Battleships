@@ -1,20 +1,28 @@
 package org.example.fxImplementation;
 
 import javafx.scene.shape.Rectangle;
-import org.example.backedn.Cell;
 import org.example.backedn.Ship;
 
-import java.util.List;
-
-public class FxShip extends Ship {
-
+public class FxShip {
+    Ship ship;
     Rectangle rectangle;
-
-    public FxShip(int x, int y, int size) {
-        super(x, y, size);
+    public FxShip(Ship ship, Rectangle rectangle){
+        this.ship = ship;
+        this.rectangle = rectangle;
+    }
+    public Ship getShip() {
+        return ship;
     }
 
-    public Rectangle getRectangle(){
+    public void setShip(Ship ship) {
+        this.ship = ship;
+    }
+
+    public Rectangle getRectangle() {
         return rectangle;
+    }
+
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
     }
 }
