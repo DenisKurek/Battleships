@@ -1,10 +1,12 @@
 package org.example.fxImplementation;
 
+import javafx.event.Event;
 import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.shape.Rectangle;
 import org.example.backedn.Board;
 import org.example.backedn.GameSettings;
@@ -69,5 +71,23 @@ public class ShipMouseEventSetter {
         }
         GameDrawer.DrawBoard();
         GameDrawer.DrawShips();
+    }
+    public static void rotate(ScrollEvent mouseEvent) {
+        rotate();
+    }
+    public static void rotate(KeyEvent event) {
+        if(event.getCode()==KeyCode.SPACE){
+            rotate();
+        }
+    }
+
+    private static void rotate() {
+        Rectangle rectangle=draggedRectangle;
+        double x, y;
+        x = rectangle.getWidth();
+        y = rectangle.getHeight();
+        rectangle.setWidth(y);
+        rectangle.setHeight(x);
+        ShipMouseEventSetter.change_position();
     }
 }

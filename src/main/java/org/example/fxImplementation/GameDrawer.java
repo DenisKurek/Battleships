@@ -21,7 +21,7 @@ public class GameDrawer {
     public GameDrawer(Game game,Pane pane){
         this.game=game;
         this.pane=pane;
-        this.pane.setOnScroll(MouseEvent -> scroled(MouseEvent));
+        this.pane.setOnScroll(MouseEvent -> ShipMouseEventSetter.rotate(MouseEvent));
         Board board = game.getBoard();
         rectangles = new Rectangle[BOARD_SIZE][BOARD_SIZE];
         for(int i=0;i<BOARD_SIZE;i++){
@@ -31,16 +31,6 @@ public class GameDrawer {
             }
         }
 
-    }
-
-    private void scroled(ScrollEvent mouseEvent) {
-        Rectangle rectangle=ShipMouseEventSetter.getDraggedRectangle();
-        double x, y;
-        x = rectangle.getWidth();
-        y = rectangle.getHeight();
-        rectangle.setWidth(y);
-        rectangle.setHeight(x);
-        ShipMouseEventSetter.change_position();
     }
 
     static public void DrawBoard(){

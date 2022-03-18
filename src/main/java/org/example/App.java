@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.example.fxImplementation.ShipMouseEventSetter;
 
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ public class App extends Application {
         scene = new Scene(loadFXML("primary"));
         stage.setScene(scene);
         stage.show();
+        scene.setOnKeyPressed(keyEvent -> ShipMouseEventSetter.rotate(keyEvent));
     }
 
     static void setRoot(String fxml) throws IOException {
