@@ -41,18 +41,33 @@ public class Board {
             throw new InvalidPositionException();
         }
     }
-    public void moveShip(int x,int y,Ship ship){
+    public void moveShip(int x,int y,Ship ship,boolean changePosition){
         removeShip(ship);
         int oldX = ship.getX();
         int oldY = ship.getY();
         ship.setPosition(x,y);
         ships.remove(ship);
         try{
+            if(changePosition){
+                if(ship.isVertical()){
+                    ship.setHorizontal();
+                }
+                else{
+                    ship.setVertical();
+                }
+            }
             addShip(ship);
         }catch (InvalidPositionException exception){
             ship.setPosition(oldX,oldY);
+            if(changePosition){
+                if(ship.isVertical()){
+                    ship.setHorizontal();
+                }
+                else{
+                    ship.setVertical();
+                }
+            }
             addShip(ship);
-            System.out.println("nie udało się");
         }
     }
 

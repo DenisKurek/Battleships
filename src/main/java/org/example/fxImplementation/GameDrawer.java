@@ -1,5 +1,10 @@
 package org.example.fxImplementation;
 
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -16,6 +21,7 @@ public class GameDrawer {
     public GameDrawer(Game game,Pane pane){
         this.game=game;
         this.pane=pane;
+        this.pane.setOnScroll(MouseEvent -> scroled(MouseEvent));
         Board board = game.getBoard();
         rectangles = new Rectangle[BOARD_SIZE][BOARD_SIZE];
         for(int i=0;i<BOARD_SIZE;i++){
@@ -26,6 +32,17 @@ public class GameDrawer {
         }
 
     }
+
+    private void scroled(ScrollEvent mouseEvent) {
+        Rectangle rectangle=ShipMouseEventSetter.getDraggedRectangle();
+        double x, y;
+        x = rectangle.getWidth();
+        y = rectangle.getHeight();
+        rectangle.setWidth(y);
+        rectangle.setHeight(x);
+        ShipMouseEventSetter.change_position();
+    }
+
     static public void DrawBoard(){
         pane.getChildren().clear();
         Board board = game.getBoard();
@@ -33,8 +50,11 @@ public class GameDrawer {
             for(int j=0;j<BOARD_SIZE;j++) {
                 Rectangle rectangle = rectangles[i][j];
                 rectangle.setStroke(Color.BLACK);
-                if(board.getCell(i,j).getState() != Cell.State.NEAR_SHIP){
+                if(board.getCell(i,j).getState() == Cell.State.SEA){
                     rectangle.setFill(Color.LIGHTBLUE);
+                }
+                else if(board.getCell(i,j).getState() == Cell.State.SHIP){
+                    rectangle.setFill(Color.VIOLET);
                 }
                 else{
                     rectangle.setFill(Color.LIGHTGREEN);
