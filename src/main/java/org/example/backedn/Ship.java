@@ -7,6 +7,7 @@ import java.util.List;
 public class Ship {
     protected int x=0;
     protected int y=0;
+    private  int health;
     protected int size;
     private Boolean vertical=false;
     protected boolean isDestroyed = false;
@@ -15,6 +16,7 @@ public class Ship {
         this.x=x;
         this.y=y;
         this.size = size;
+        this.health = size;
     }
 
     public void setX(int Position) {

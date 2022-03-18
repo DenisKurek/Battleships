@@ -1,8 +1,5 @@
 package org.example.fxImplementation;
 
-import javafx.event.Event;
-import javafx.event.EventType;
-import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -69,7 +66,7 @@ public class ShipMouseEventSetter {
             fxship.getRectangle().setX(x * gameSettings.getCellSize());
             fxship.getRectangle().setY(y * gameSettings.getCellSize());
         }
-        GameDrawer.DrawBoard();
+        GameDrawer.DrawPlayerBoard();
         GameDrawer.DrawShips();
     }
     public static void rotate(ScrollEvent mouseEvent) {
@@ -83,11 +80,13 @@ public class ShipMouseEventSetter {
 
     private static void rotate() {
         Rectangle rectangle=draggedRectangle;
-        double x, y;
-        x = rectangle.getWidth();
-        y = rectangle.getHeight();
-        rectangle.setWidth(y);
-        rectangle.setHeight(x);
-        ShipMouseEventSetter.change_position();
+        if (rectangle!=null){
+            double x, y;
+            x = rectangle.getWidth();
+            y = rectangle.getHeight();
+            rectangle.setWidth(y);
+            rectangle.setHeight(x);
+            ShipMouseEventSetter.change_position();
+        }
     }
 }

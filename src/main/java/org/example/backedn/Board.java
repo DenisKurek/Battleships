@@ -9,6 +9,11 @@ import java.util.List;
 public class Board {
     GameSettings gameSettings = new GameSettings();
     private Cell[][] cells;
+
+    public List<Ship> getShips() {
+        return ships;
+    }
+
     private List<Ship> ships;
     public Board(){
         initialize();

@@ -1,24 +1,24 @@
 package org.example.backedn;
 
 public class GameSettings {
-    private final int boardSize =10;
-    private final int NumberOfShips = 8;
-    private final int MaxShipSize = 5;
-    private final double CellSize = 40;
+    static private final int boardSize =10;
+    static private final int NumberOfShips = 8;
+    static private final int MaxShipSize = 5;
+    static private final double CellSize = 40;
 
-    public int getBoardSize() {
+    static public int getBoardSize() {
         return boardSize;
     }
 
-    public int getNumberOfShips() {
+    static public int getNumberOfShips() {
         return NumberOfShips;
     }
 
-    public int getMaxShipSize() {
+    static public int getMaxShipSize() {
         return MaxShipSize;
     }
 
-    public double getCellSize() {
+    static public double getCellSize() {
         return CellSize;
     }
 }

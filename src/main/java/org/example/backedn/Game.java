@@ -2,37 +2,56 @@ package org.example.backedn;
 
 import org.example.exceptions.InvalidPositionException;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
     GameSettings gameSettings = new GameSettings();
-    public Board getBoard() {
-        return board;
+    public Board getPlayerBoard() {
+        return playerBoard;
+    }
+    public Board getEnemyBoard() {
+        return enemyBoard;
     }
 
-    private Board board;
+    private Board playerBoard;
+    private Board enemyBoard;
     public Game(){
     }
     public void runGame(){
-        board = new Board();
         Random random = new Random();
-        for(int i=0;i< gameSettings.getNumberOfShips();i++){
+        int seed = random.nextInt();
+        playerBoard = new Board();
+        enemyBoard = new Board();
+        for(int i=0;i< gameSettings.getNumberOfShips();i++) {
             try {
                 Ship ship = new Ship(random.nextInt(gameSettings.getBoardSize()),
                         random.nextInt(gameSettings.getBoardSize()),
-                        1+random.nextInt(gameSettings.getMaxShipSize()-1));
-                if(random.nextBoolean()){
+                        1 + random.nextInt(gameSettings.getMaxShipSize() - 1));
+                if (random.nextBoolean()) {
                     ship.setVertical();
-                }
-                else{
+                } else {
                     ship.setHorizontal();
                 }
-                board.addShip(ship);
-            }
-            catch (InvalidPositionException exception){
+                playerBoard.addShip(ship);
+            } catch (InvalidPositionException exception) {
                 i--;
             }
         }
-
+        for(int i=0;i< gameSettings.getNumberOfShips();i++) {
+            try {
+                Ship ship = new Ship(random.nextInt(gameSettings.getBoardSize()),
+                        random.nextInt(gameSettings.getBoardSize()),
+                        playerBoard.getShips().get(i).size);
+                if (random.nextBoolean()) {
+                    ship.setVertical();
+                } else {
+                    ship.setHorizontal();
+                }
+                enemyBoard.addShip(ship);
+            } catch (InvalidPositionException exception) {
+                i--;
+            }
+        }
     }
 }
