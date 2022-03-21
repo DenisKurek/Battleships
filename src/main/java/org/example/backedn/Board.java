@@ -5,23 +5,43 @@ import org.example.exceptions.ShipNotExistexception;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * klasa prezentujaca Board
+ */
 public class Board {
     GameSettings gameSettings = new GameSettings();
+    /**
+     * tablica dwuwymiarowa prezentująca rozmiar planszy
+     */
     private Cell[][] cells;
+    /**
+     * lista z klasy ship
+     * @return info na temat statku
+     */
 
     public List<Ship> getShips() {
         return ships;
     }
-
+    /**
+     * lista z klasy ship
+     */
     private List<Ship> ships;
+    /**
+     *
+     */
     public Board(){
         initialize();
     }
+    /**
+     *
+     */
     private void initialize(){
         ships = new ArrayList<Ship>();
         initializeCells();
     }
+    /**
+     * funkcja prezentująca dodanie statku
+     */
     public void addShip(Ship ship) {
         ships.add(ship);
         if(checkIfShipPositionValid(ship,ship.isVertical())){
@@ -46,6 +66,9 @@ public class Board {
             throw new InvalidPositionException();
         }
     }
+    /**
+     * funkcja prezentująca ruch statku
+     */
     public void moveShip(int x,int y,Ship ship,boolean changePosition){
         removeShip(ship);
         int oldX = ship.getX();
@@ -75,7 +98,9 @@ public class Board {
             addShip(ship);
         }
     }
-
+    /**
+     * funkcja prezentująca ruch statku
+     */
     private void removeShip(Ship ship) {
         int x = ship.getX();
         int y = ship.getY();
@@ -95,7 +120,9 @@ public class Board {
         }
 
     }
-
+    /**
+     *
+     */
     private void changeNeighbState(int x , int y, Cell.State state) {
         for(int i=-1;i<2;i++){
             for(int j=-1;j<2;j++){
@@ -110,7 +137,9 @@ public class Board {
             }
         }
     }
-
+    /**
+     * sprawdzanie czy pozycja statku nie koliduje i innymi
+     */
     private boolean checkIfShipPositionValid(Ship ship,boolean isVertical) {
         int x=ship.getX();
         int y=ship.getY();
@@ -130,7 +159,9 @@ public class Board {
         }
         return true;
     }
-
+    /**
+     *
+     */
     private boolean checkPosition(int x, int y) {
         if(x<0 || x>= gameSettings.getBoardSize()){
             return false;
@@ -140,7 +171,9 @@ public class Board {
         }
         return true;
     }
-
+    /**
+     *
+     */
     private void initializeCells() {
         this.cells = new Cell[gameSettings.getBoardSize()][gameSettings.getBoardSize()];
         for (int i = 0;i <gameSettings.getBoardSize();i++){
