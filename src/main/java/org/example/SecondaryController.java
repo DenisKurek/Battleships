@@ -2,15 +2,17 @@ package org.example;
 
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import org.example.backedn.Cell;
-import org.example.backedn.Game;
-import org.example.backedn.GameSettings;
+import javafx.scene.text.Font;
+import org.example.backedn.*;
 import org.example.fxImplementation.GameDrawer;
 
 public class SecondaryController {
@@ -18,6 +20,9 @@ public class SecondaryController {
     Pane playerPane;
     @FXML
     Pane enemyPane;
+    @FXML
+    VBox box;
+    EnemyPlayer enemyPlayer = new EnemyPlayer();
     @FXML
     public void beginGame() {
         GameDrawer gameDrawer = new GameDrawer(game,playerPane,enemyPane);
@@ -33,24 +38,40 @@ public class SecondaryController {
 
     private void onclick(MouseEvent mouseEvent, int i, int j) {
         Rectangle rectangle = (Rectangle) mouseEvent.getSource();
-        rectangle.setFill(Color.GREEN);
         rectangle.setOnMouseClicked(null);
         Random random = new Random();
-        Cell cell;
-        while(true) {
-            cell=game.getPlayerBoard().getCell(random.nextInt(GameSettings.getBoardSize()),
-                    random.nextInt(GameSettings.getBoardSize()));
-            if(!cell.ifClicked()){
-                cell.click();
-                GameDrawer.getPlayerRectangle((int)(cell.getX()/GameSettings.getCellSize()),
-                        (int)(cell.getY()/GameSettings.getCellSize())).setFill(Color.RED);
+        Board playerboard=game.getPlayerBoard();
+        Board enemyboard=game.getEnemyBoard();
+        while(!game.getEnemyBoard().Shoot(i,j)){
+            if(!enemyPlayer.make_move(playerboard)){
                 break;
             }
+            GameDrawer.DrawPlayerBoard();
+        }
+        GameDrawer.DrawEnemyBoard();
+        GameDrawer.DrawPlayerBoard();
+        if(playerboard.getNumberOfShips()<=0){
+            endGame("Przegrałeś");
+        }
+        if(enemyboard.getNumberOfShips()<=0){
+            endGame("Wygrałeś");
         }
     }
-
     Game game;
     public void setGame(Game game) {
         this.game = game;
     }
+    public void endGame(String massage){
+        box.getChildren().clear();
+        Label label = new Label();
+        label.setText(massage);
+        label.setFont(new Font("Arial", 50));
+        if(massage == "Wygrałeś"){
+            label.setTextFill(Color.GREEN);
+        }
+        else{
+            label.setTextFill(Color.RED);
+        }
+        box.getChildren().add(label);
+    };
 }

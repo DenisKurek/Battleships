@@ -1,5 +1,7 @@
 package org.example.backedn;
 
+import org.example.exceptions.AllreadyDeadException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,5 +45,19 @@ public class Ship {
     public void setHorizontal(){
         vertical = false;
     }
+    public Boolean shoot(){
+        if(isDestroyed) {
+            throw new AllreadyDeadException();
+        }
+        else{
+            health--;
+            if(health==0){
+                isDestroyed=true;
+            }
+        }
+        return isDestroyed;
+    }
+
+
 
 }

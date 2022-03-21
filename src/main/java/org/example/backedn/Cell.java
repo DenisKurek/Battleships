@@ -10,7 +10,7 @@ public class Cell {
     public int getNearShipsCount(){
         return nearShipsCount;
     }
-    public enum State {SHIP , NEAR_SHIP, SEA}
+    public enum State {SHIP, NEAR_SHIP, SEA}
     State state = State.SEA;
 
     public Cell(double x, double y, double size){

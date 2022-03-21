@@ -9,8 +9,11 @@ import java.util.List;
 public class Board {
     GameSettings gameSettings = new GameSettings();
     private Cell[][] cells;
-
-    public List<Ship> getShips() {
+    private int numberOfShips=0;
+    public int getNumberOfShips(){
+        return numberOfShips;
+    }
+    public List<Ship> getShips(){
         return ships;
     }
 
@@ -19,11 +22,13 @@ public class Board {
         initialize();
     }
     private void initialize(){
+        numberOfShips=0;
         ships = new ArrayList<Ship>();
         initializeCells();
     }
     public void addShip(Ship ship) {
         ships.add(ship);
+        numberOfShips ++;
         if(checkIfShipPositionValid(ship,ship.isVertical())){
             int x = ship.getX();
             int y = ship.getY();
@@ -43,6 +48,8 @@ public class Board {
             }
         }
         else{
+            ships.remove(ship);
+            numberOfShips --;
             throw new InvalidPositionException();
         }
     }
@@ -77,6 +84,7 @@ public class Board {
     }
 
     private void removeShip(Ship ship) {
+        numberOfShips --;
         int x = ship.getX();
         int y = ship.getY();
         if(ship.isVertical()){
@@ -100,7 +108,8 @@ public class Board {
         for(int i=-1;i<2;i++){
             for(int j=-1;j<2;j++){
                 if(checkPosition(x+i,y+j)){
-                    if(cells[x + i][y + j].getState() != Cell.State.SHIP && state == Cell.State.NEAR_SHIP) {
+                    if(cells[x + i][y + j].getState() != Cell.State.SHIP &&
+                            state == Cell.State.NEAR_SHIP ) {
                         cells[x + i][y + j].setState(state);
                     }
                     else if (state == Cell.State.SEA){
@@ -153,4 +162,42 @@ public class Board {
     public Cell getCell(int i,int j){
         return cells[i][j];
     }
+    public Boolean Shoot(int i,int j) {
+        Cell cell = getCell(i, j);
+        Ship ship = cell.get_ship();
+        cell.click();
+        if (ship != null) {
+            if (ship.shoot()) {
+                int x = ship.getX();
+                int y = ship.getY();
+                //System.out.println("ship destroyed x= " + x + ", y= " + y + " size =  " + ship.getSize());
+                if (ship.isVertical()) {
+                    for (int k = 0; k < ship.getSize(); k++, y++) {
+                        //System.out.println("state hanged x= " + x + ", y= " + y);
+                        clickNeighbour(x, y);
+                    }
+                } else {
+                    for (int k = 0; k < ship.getSize(); k++, x++) {
+                        //System.out.println("state hanged x= " + x + ", y= " + y);
+                        clickNeighbour(x, y);
+                    }
+                }
+                ships.remove(ship);
+                numberOfShips--;
+            }
+            return true;
+
+        }
+        return false;
+    }
+    private void clickNeighbour(int x ,int y){
+        for(int i=-1;i<2;i++){
+            for(int j=-1;j<2;j++){
+                if(checkPosition(x+i,y+j)){
+                        cells[x + i][y + j].click();
+                }
+            }
+        }
+    }
 }
+

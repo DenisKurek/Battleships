@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.example.backedn.*;
 
+import java.lang.invoke.SwitchPoint;
+
 public class GameDrawer {
     static private Game game = null;
     static private Pane playerPane;
@@ -63,14 +65,31 @@ public class GameDrawer {
             for(int j=0;j<BOARD_SIZE;j++) {
                 Rectangle rectangle = playerRectangles[i][j];
                 rectangle.setStroke(Color.BLACK);
-                if(board.getCell(i,j).getState() == Cell.State.SEA){
-                    rectangle.setFill(Color.LIGHTBLUE);
-                }
-                else if(board.getCell(i,j).getState() == Cell.State.SHIP){
-                    rectangle.setFill(Color.VIOLET);
-                }
-                else{
-                    rectangle.setFill(Color.LIGHTGREEN);
+                switch(board.getCell(i,j).getState()) {
+                    case SEA:
+                        if(board.getCell(i,j).ifClicked()){
+                            rectangle.setFill(Color.DARKBLUE);
+                        }
+                        else{
+                            rectangle.setFill(Color.LIGHTBLUE);
+                        }
+                        break;
+                    case SHIP:
+                        if(board.getCell(i,j).ifClicked()){
+                            rectangle.setFill(Color.RED);
+                        }
+                        else {
+                            rectangle.setFill(Color.VIOLET);
+                        }
+                        break;
+                    case NEAR_SHIP:
+                        if(board.getCell(i,j).ifClicked()){
+                            rectangle.setFill(Color.DARKBLUE);
+                        }
+                        else{
+                            rectangle.setFill(Color.LIGHTGREEN);
+                        }
+                        break;
                 }
                 playerPane.getChildren().add(rectangle);
             }
@@ -83,14 +102,24 @@ public class GameDrawer {
             for(int j=0;j<BOARD_SIZE;j++) {
                 Rectangle rectangle = enemyRectangles[i][j];
                 rectangle.setStroke(Color.BLACK);
-                if(board.getCell(i,j).getState() == Cell.State.SEA){
-                    rectangle.setFill(Color.LIGHTBLUE);
-                }
-                else if(board.getCell(i,j).getState() == Cell.State.SHIP){
-                    rectangle.setFill(Color.RED);
-                }
-                else{
-                    rectangle.setFill(Color.LIGHTPINK);
+                switch(board.getCell(i,j).getState()) {
+                    case SHIP:
+                        if(board.getCell(i,j).ifClicked()){
+                            rectangle.setFill(Color.GREEN);
+                        }
+                        else{
+                            rectangle.setFill(Color.LIGHTBLUE);
+                        }
+                        break;
+                    case NEAR_SHIP:
+                    case SEA:
+                        if(board.getCell(i,j).ifClicked()){
+                            rectangle.setFill(Color.DARKBLUE);
+                        }
+                        else{
+                            rectangle.setFill(Color.LIGHTBLUE);
+                        }
+                        break;
                 }
                 enemyPane.getChildren().add(rectangle);
             }
