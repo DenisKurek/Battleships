@@ -79,7 +79,7 @@ public class GameDrawer {
                             rectangle.setFill(Color.RED);
                         }
                         else {
-                            rectangle.setFill(Color.VIOLET);
+                            rectangle.setFill(Color.GREEN);
                         }
                         break;
                     case NEAR_SHIP:

@@ -42,7 +42,8 @@ public class SecondaryController {
         Random random = new Random();
         Board playerboard=game.getPlayerBoard();
         Board enemyboard=game.getEnemyBoard();
-        while(!game.getEnemyBoard().Shoot(i,j)){
+        Boolean faliure = !game.getEnemyBoard().Shoot(i,j);
+        while(faliure){
             if(!enemyPlayer.make_move(playerboard)){
                 break;
             }

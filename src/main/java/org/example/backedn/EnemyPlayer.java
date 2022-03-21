@@ -22,16 +22,7 @@ public class EnemyPlayer {
                 if(board.getCell(i,j).ifClicked()){
                     if(board.getCell(i,j).getState()== Cell.State.SHIP){
                         clicked[i][j] = false;
-                        for(int ii=-1;ii<2;ii++){
-                            if(checkPosition(ii+i,j)){
-                                count[i+ii][j]=10000;
-                            }
-                        }
-                        for(int jj=-1;jj<2;jj++){
-                            if(checkPosition(i,j+jj)){
-                                count[i][jj+j]=10000;
-                            }
-                        }
+                        addValue(i,j,board);
                     }
                     else{
                         clicked[i][j]=true;
@@ -83,8 +74,41 @@ public class EnemyPlayer {
                 }
             }
         }
+
         return board.Shoot(besI,bestJ);
     }
+
+    private void addValue(int x, int y,Board board) {
+        if(checkPosition(x,y+1)){
+            count[x][y+1]=10000;
+        }
+        if(checkPosition(x,y-1)){
+            count[x][y-1]=10000;
+        }
+        if(checkPosition(x+1,y)){
+            count[x+1][y]=10000;
+        }
+        if(checkPosition(x-1,y)){
+            count[x-1][y]=10000;
+        }
+        if(checkPosition(x-1,y)&&checkPosition(x+1,y)) {
+            if (board.getCell(x - 1, y).isClicked && board.getCell(x - 1, y).getState() == Cell.State.SHIP) {
+                count[x + 1][y] = 20000;
+            }
+            if (board.getCell(x + 1, y).isClicked && board.getCell(x + 1, y).getState() == Cell.State.SHIP) {
+                count[x - 1][y] = 20000;
+            }
+        }
+        if(checkPosition(x,y-1)&&checkPosition(x,y+1)) {
+            if (board.getCell(x , y - 1).isClicked && board.getCell(x , y -1).getState() == Cell.State.SHIP) {
+                count[x][y+1] = 20000;
+            }
+            if (board.getCell(x , y + 1).isClicked && board.getCell(x , y + 1).getState() == Cell.State.SHIP) {
+                count[x][y -1] = 20000;
+            }
+        }
+    }
+
     private boolean checkIfShipPositionValid(Ship ship,boolean isVertical) {
         int x=ship.getX();
         int y=ship.getY();
