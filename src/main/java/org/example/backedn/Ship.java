@@ -3,7 +3,9 @@ package org.example.backedn;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * klasa prezentujaca statek
+ */
 public class Ship {
     protected int x=0;
     protected int y=0;

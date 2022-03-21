@@ -4,7 +4,9 @@ import org.example.exceptions.InvalidPositionException;
 
 import java.util.ArrayList;
 import java.util.Random;
-
+/**
+ * klasa prezentujaca gry
+ */
 public class Game {
     GameSettings gameSettings = new GameSettings();
     public Board getPlayerBoard() {
