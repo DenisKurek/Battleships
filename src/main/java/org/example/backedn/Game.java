@@ -4,30 +4,47 @@ import org.example.exceptions.InvalidPositionException;
 
 import java.util.ArrayList;
 import java.util.Random;
-
+/**
+ * klasa reprezentująca grę
+ */
 public class Game {
-    GameSettings gameSettings = new GameSettings();
+    /**
+     * plansza gracza
+     */
+    private Board playerBoard;
+    /**
+     * plansza przeciwnika
+     */
+    private Board enemyBoard;
+    /**
+     * metoda zwracająca planszę gracza
+     * @return plansza gracza
+     */
     public Board getPlayerBoard() {
         return playerBoard;
     }
+    /**
+     * metoda zwracająca planszę przeciwnika
+     * @return plansza przeciwnika
+     */
     public Board getEnemyBoard() {
         return enemyBoard;
     }
 
-    private Board playerBoard;
-    private Board enemyBoard;
-    public Game(){
-    }
+    /**
+     * metoda uruchamiająca grę
+     */
     public void runGame(){
         Random random = new Random();
         int seed = random.nextInt();
         playerBoard = new Board();
         enemyBoard = new Board();
-        for(int i=0;i< gameSettings.getNumberOfShips();i++) {
+        //generowanie statków i rozmieszczanie na planszy gracza
+        for(int i=0;i< GameSettings.getNumberOfShips();i++) {
             try {
-                Ship ship = new Ship(random.nextInt(gameSettings.getBoardSize()),
-                        random.nextInt(gameSettings.getBoardSize()),
-                        GameSettings.getMinShipSize() + random.nextInt(gameSettings.getMaxShipSize()));
+                Ship ship = new Ship(random.nextInt(GameSettings.getBoardSize()),
+                        random.nextInt(GameSettings.getBoardSize()),
+                        GameSettings.getMinShipSize() + random.nextInt(GameSettings.getMaxShipSize()));
                 if (random.nextBoolean()) {
                     ship.setVertical();
                 } else {
@@ -38,10 +55,11 @@ public class Game {
                 i--;
             }
         }
-        for(int i=0;i< gameSettings.getNumberOfShips();i++) {
+        //generowanie statków i rozmieszczanie na planszy przeciwnika
+        for(int i=0;i< GameSettings.getNumberOfShips();i++) {
             try {
-                Ship ship = new Ship(random.nextInt(gameSettings.getBoardSize()),
-                        random.nextInt(gameSettings.getBoardSize()),
+                Ship ship = new Ship(random.nextInt(GameSettings.getBoardSize()),
+                        random.nextInt(GameSettings.getBoardSize()),
                         playerBoard.getShips().get(i).size);
                 if (random.nextBoolean()) {
                     ship.setVertical();

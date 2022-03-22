@@ -5,8 +5,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.example.backedn.*;
 
-import java.lang.invoke.SwitchPoint;
-
 public class GameDrawer {
     static private Game game = null;
     static private Pane playerPane;
@@ -67,7 +65,7 @@ public class GameDrawer {
                 rectangle.setStroke(Color.BLACK);
                 switch(board.getCell(i,j).getState()) {
                     case SEA:
-                        if(board.getCell(i,j).ifClicked()){
+                        if(board.getCell(i,j).clicked()){
                             rectangle.setFill(Color.DARKBLUE);
                         }
                         else{
@@ -75,7 +73,7 @@ public class GameDrawer {
                         }
                         break;
                     case SHIP:
-                        if(board.getCell(i,j).ifClicked()){
+                        if(board.getCell(i,j).clicked()){
                             rectangle.setFill(Color.RED);
                         }
                         else {
@@ -83,7 +81,7 @@ public class GameDrawer {
                         }
                         break;
                     case NEAR_SHIP:
-                        if(board.getCell(i,j).ifClicked()){
+                        if(board.getCell(i,j).clicked()){
                             rectangle.setFill(Color.DARKBLUE);
                         }
                         else{
@@ -104,7 +102,7 @@ public class GameDrawer {
                 rectangle.setStroke(Color.BLACK);
                 switch(board.getCell(i,j).getState()) {
                     case SHIP:
-                        if(board.getCell(i,j).ifClicked()){
+                        if(board.getCell(i,j).clicked()){
                             rectangle.setFill(Color.GREEN);
                         }
                         else{
@@ -113,7 +111,7 @@ public class GameDrawer {
                         break;
                     case NEAR_SHIP:
                     case SEA:
-                        if(board.getCell(i,j).ifClicked()){
+                        if(board.getCell(i,j).clicked()){
                             rectangle.setFill(Color.DARKBLUE);
                         }
                         else{

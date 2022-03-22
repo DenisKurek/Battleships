@@ -5,7 +5,9 @@ import org.example.exceptions.AllreadyDeadException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * klasa prezentujaca statek
+ */
 public class Ship {
     protected int x=0;
     protected int y=0;

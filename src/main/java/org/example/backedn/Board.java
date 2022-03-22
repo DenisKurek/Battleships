@@ -1,34 +1,52 @@
 package org.example.backedn;
-
 import org.example.exceptions.InvalidPositionException;
 import org.example.exceptions.ShipNotExistexception;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * klasa prezentujaca Planszę do gry
+ */
 public class Board {
-    GameSettings gameSettings = new GameSettings();
+    /**
+     * dwuwymiarowa tablica pól
+     */
     private Cell[][] cells;
-    private int numberOfShips=0;
-    public int getNumberOfShips(){
-        return numberOfShips;
-    }
-    public List<Ship> getShips(){
-        return ships;
-    }
-
+    /**
+     * lista statków
+     */
     private List<Ship> ships;
+    /**
+     * konstruktor domyślny klasy Board
+     */
     public Board(){
         initialize();
     }
-    private void initialize(){
-        numberOfShips=0;
-        ships = new ArrayList<Ship>();
-        initializeCells();
+
+    /**
+     * geter zwracający dane polne na planszy
+     * @param cellX współrzędna x pola
+     * @param cellY współrzędna y pola
+     * @return  obiekt klasy cell reprezentujący pole na planszy
+     */
+    public Cell getCell(int cellX,int cellY){
+        return cells[cellX][cellY];
     }
+
+    /**
+     * metoda zwracająca statki umieszcone na planszy
+     * @return lista poostałych statków
+     */
+    public List<Ship> getShips(){return ships;}
+
+    /**
+     * metoda dodająca statek do planszy
+     * @param ship obiekt typu Ship do dodania
+     */
     public void addShip(Ship ship) {
+        //dodanie statku do listy
         ships.add(ship);
-        numberOfShips ++;
+        //próba położenia statku na planszy
         if(checkIfShipPositionValid(ship,ship.isVertical())){
             int x = ship.getX();
             int y = ship.getY();
@@ -48,28 +66,42 @@ public class Board {
             }
         }
         else{
+            // w przypadku gdy statku nie udalo się umieścić
             ships.remove(ship);
-            numberOfShips --;
             throw new InvalidPositionException();
         }
     }
-    public void moveShip(int x,int y,Ship ship,boolean changePosition){
+
+    /**
+     * metoda przemieszczająca statek na planszy
+     * @param newX  nowa współrzędna x
+     * @param newY  nowa współrzędna y
+     * @param ship  obiekt typu Ship do dodania
+     * @param changePosition informacja czy obrucić statek przy przemieszczaniu
+     */
+    public void moveShip(int newX,int newY,Ship ship,boolean changePosition){
+        // usunięcie statku z planszy
         removeShip(ship);
+        ships.remove(ship);
+        //zapamiętanie jego starych współrzędnych
         int oldX = ship.getX();
         int oldY = ship.getY();
-        ship.setPosition(x,y);
-        ships.remove(ship);
-        try{
-            if(changePosition){
-                if(ship.isVertical()){
-                    ship.setHorizontal();
-                }
-                else{
-                    ship.setVertical();
-                }
+        //zmiana pozyscji  i obrót statku
+        ship.setPosition(newX,newY);
+        if(changePosition){
+            if(ship.isVertical()){
+                ship.setHorizontal();
             }
+            else{
+                ship.setVertical();
+            }
+        }
+        //próba dodania statku na nowej pozycji
+        try{
             addShip(ship);
-        }catch (InvalidPositionException exception){
+        }
+        catch (InvalidPositionException ignore){
+            //ustawienie statku spowrotem na pozycji początkowej
             ship.setPosition(oldX,oldY);
             if(changePosition){
                 if(ship.isVertical()){
@@ -83,8 +115,59 @@ public class Board {
         }
     }
 
+    /**
+     * strzelenie w daną pozycję na planszy
+     * @param x
+     * @param y
+     * @return
+     */
+    public Boolean Shoot(int x,int y) {
+        Cell cell = getCell(x, y);
+        Ship ship = cell.get_ship();
+        cell.click();
+        if (ship != null) {
+            //sprawdzenie czy statek został zatopiony
+            if (ship.shoot()) {
+                int shipX = ship.getX();
+                int shipY = ship.getY();
+                //zaznaczenie pól dookoła zatopionego statku
+                if (ship.isVertical()) {
+                    for (int i = 0; i < ship.getSize(); i++, shipY++) {
+                        clickNeighbour(shipX, shipY);
+                    }
+                }
+                else {
+                    for (int i = 0; i < ship.getSize(); i++, shipX++) {
+                        clickNeighbour(shipX, shipY);
+                    }
+                }
+                ships.remove(ship);
+            }
+            return true;
+
+        }
+        return false;
+    }
+
+    /**
+     * metoda inicializująca planszę
+     */
+    private void initialize(){
+        ships = new ArrayList<Ship>();
+        this.cells = new Cell[GameSettings.getBoardSize()][GameSettings.getBoardSize()];
+        for (int i = 0; i < GameSettings.getBoardSize(); i++){
+            for (int j = 0; j < GameSettings.getBoardSize(); j++){
+                this.cells[i][j] = new Cell(i* GameSettings.getCellSize(), j* GameSettings.getCellSize(), GameSettings.getCellSize());
+                cells[i][j].setState(Cell.State.SEA);
+            }
+        }
+    }
+
+    /**
+     * metoda usuwająca statek z planszy
+     * @param ship statek do usunięcia
+     */
     private void removeShip(Ship ship) {
-        numberOfShips --;
         int x = ship.getX();
         int y = ship.getY();
         if(ship.isVertical()){
@@ -104,22 +187,37 @@ public class Board {
 
     }
 
-    private void changeNeighbState(int x , int y, Cell.State state) {
-        for(int i=-1;i<2;i++){
-            for(int j=-1;j<2;j++){
-                if(checkPosition(x+i,y+j)){
-                    if(cells[x + i][y + j].getState() != Cell.State.SHIP &&
+    /**
+     * metoda zmieniająca status sąsiadów pola
+     * @param cellX współrzędna x pola
+     * @param cellY współrzędna y pola
+     * @param state stan do ustawienia
+     */
+    private void changeNeighbState(int cellX , int cellY, Cell.State state) {
+        for(int x=-1;x<2;x++){
+            for(int y=-1;y<2;y++){
+                //sprawdzanie czy pozycja istnieje
+                if(checkPosition(cellX+x,cellY+y)){
+                    //status NEAR_SHIP nie powinien nadpisywać statusu SHIP
+                    if(cells[cellX + x][cellY + y].getState() != Cell.State.SHIP &&
                             state == Cell.State.NEAR_SHIP ) {
-                        cells[x + i][y + j].setState(state);
+                        cells[cellX + x][cellY + y].setState(state);
                     }
+                    //status SEA nadpisuje każdy inny status
                     else if (state == Cell.State.SEA){
-                        cells[x + i][y + j].setState(state);
+                        cells[cellX + x][cellY + y].setState(state);
                     }
                 }
             }
         }
     }
 
+    /**
+     * sprawdzanie czy statek nie koliduje z innymi statkami
+     * @param ship statek który sprawdzamy
+     * @param isVertical informacjia o tym czy statek ma xostać ułożony pionowo czy poziomo
+     * @return  FALSE jeżeli statek koliduje TRUE jeżeli nie
+     */
     private boolean checkIfShipPositionValid(Ship ship,boolean isVertical) {
         int x=ship.getX();
         int y=ship.getY();
@@ -140,64 +238,33 @@ public class Board {
         return true;
     }
 
+    /**
+     * sprawdzenie czy pozycja jest legalna
+     * @param x współrzędna x
+     * @param y współrzędna y
+     * @return  TRUE jeżeli wartość jest legalna FALSE jeżeli nie
+     */
     private boolean checkPosition(int x, int y) {
-        if(x<0 || x>= gameSettings.getBoardSize()){
+        if(x<0 || x>= GameSettings.getBoardSize()){
             return false;
         }
-        if(y<0 || y>= gameSettings.getBoardSize()){
-            return false;
-        }
-        return true;
+        return y >= 0 && y < GameSettings.getBoardSize();
     }
 
-    private void initializeCells() {
-        this.cells = new Cell[gameSettings.getBoardSize()][gameSettings.getBoardSize()];
-        for (int i = 0;i <gameSettings.getBoardSize();i++){
-            for (int j = 0;j <gameSettings.getBoardSize();j++){
-                this.cells[i][j] = new Cell(i*gameSettings.getCellSize(), j*gameSettings.getCellSize(),gameSettings.getCellSize());
-                cells[i][j].setState(Cell.State.SEA);
-            }
-        }
-    }
-    public Cell getCell(int i,int j){
-        return cells[i][j];
-    }
-    public Boolean Shoot(int i,int j) {
-        Cell cell = getCell(i, j);
-        Ship ship = cell.get_ship();
-        cell.click();
-        if (ship != null) {
-            if (ship.shoot()) {
-                int x = ship.getX();
-                int y = ship.getY();
-                //System.out.println("ship destroyed x= " + x + ", y= " + y + " size =  " + ship.getSize());
-                if (ship.isVertical()) {
-                    for (int k = 0; k < ship.getSize(); k++, y++) {
-                        //System.out.println("state hanged x= " + x + ", y= " + y);
-                        clickNeighbour(x, y);
-                    }
-                } else {
-                    for (int k = 0; k < ship.getSize(); k++, x++) {
-                        //System.out.println("state hanged x= " + x + ", y= " + y);
-                        clickNeighbour(x, y);
-                    }
-                }
-                ships.remove(ship);
-                numberOfShips--;
-            }
-            return true;
-
-        }
-        return false;
-    }
-    private void clickNeighbour(int x ,int y){
+    /**
+     * kliknięcie sąsiadów danej pola
+     * @param cellX współrzędna x pola
+     * @param cellY współrzędna y pola
+     */
+    private void clickNeighbour(int cellX ,int cellY){
         for(int i=-1;i<2;i++){
             for(int j=-1;j<2;j++){
-                if(checkPosition(x+i,y+j)){
-                        cells[x + i][y + j].click();
+                if(checkPosition(cellX+i,cellY+j)){
+                        cells[cellX + i][cellY + j].click();
                 }
             }
         }
     }
+
 }
 

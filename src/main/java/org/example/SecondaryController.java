@@ -1,8 +1,6 @@
 package org.example;
 
-import java.io.IOException;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -49,12 +47,19 @@ public class SecondaryController {
             }
             GameDrawer.DrawPlayerBoard();
         }
+        for(int ii=0;ii<GameSettings.getBoardSize();ii++) {
+            for (int jj = 0; jj < GameSettings.getBoardSize(); jj++) {
+                if(game.getEnemyBoard().getCell(ii,jj).clicked()){
+                    GameDrawer.getEnemyRectangle(ii,jj).setOnMouseClicked(mouseEvent1 -> {});
+                }
+            }
+        }
         GameDrawer.DrawEnemyBoard();
         GameDrawer.DrawPlayerBoard();
-        if(playerboard.getNumberOfShips()<=0){
+        if(playerboard.getShips().isEmpty()){
             endGame("Przegrałeś");
         }
-        if(enemyboard.getNumberOfShips()<=0){
+        if(enemyboard.getShips().isEmpty()){
             endGame("Wygrałeś");
         }
     }
