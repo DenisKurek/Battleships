@@ -1,8 +1,6 @@
-package org.example.backedn;
+package org.example.backend;
 
 import org.example.exceptions.InvalidPositionException;
-
-import java.util.ArrayList;
 import java.util.Random;
 /**
  * klasa reprezentująca grę
@@ -35,31 +33,21 @@ public class Game {
      * metoda uruchamiająca grę
      */
     public void runGame(){
-        Random random = new Random();
-        int seed = random.nextInt();
         playerBoard = new Board();
         enemyBoard = new Board();
-        //generowanie statków i rozmieszczanie na planszy gracza
-        for(int i=0;i< GameSettings.getNumberOfShips();i++) {
+        generatePlayerBoard();
+        generateEnemyBoard();
+    }
+
+    /**
+     * metoda generująca planszę przeciwnika
+     */
+    private void generateEnemyBoard() {
+        Random random = new Random();
+        for(int i=0;i< GameSettings.numberOfShips;i++) {
             try {
-                Ship ship = new Ship(random.nextInt(GameSettings.getBoardSize()),
-                        random.nextInt(GameSettings.getBoardSize()),
-                        GameSettings.getMinShipSize() + random.nextInt(GameSettings.getMaxShipSize()));
-                if (random.nextBoolean()) {
-                    ship.setVertical();
-                } else {
-                    ship.setHorizontal();
-                }
-                playerBoard.addShip(ship);
-            } catch (InvalidPositionException exception) {
-                i--;
-            }
-        }
-        //generowanie statków i rozmieszczanie na planszy przeciwnika
-        for(int i=0;i< GameSettings.getNumberOfShips();i++) {
-            try {
-                Ship ship = new Ship(random.nextInt(GameSettings.getBoardSize()),
-                        random.nextInt(GameSettings.getBoardSize()),
+                Ship ship = new Ship(random.nextInt(GameSettings.boardSize),
+                        random.nextInt(GameSettings.boardSize),
                         playerBoard.getShips().get(i).size);
                 if (random.nextBoolean()) {
                     ship.setVertical();
@@ -67,6 +55,28 @@ public class Game {
                     ship.setHorizontal();
                 }
                 enemyBoard.addShip(ship);
+            } catch (InvalidPositionException exception) {
+                i--;
+            }
+        }
+    }
+
+    /**
+     * metoda generująca planszę gracza
+     */
+    private void generatePlayerBoard() {
+        Random random = new Random();
+        for(int i=0;i< GameSettings.numberOfShips;i++) {
+            try {
+                Ship ship = new Ship(random.nextInt(GameSettings.boardSize),
+                        random.nextInt(GameSettings.boardSize),
+                        GameSettings.minShipSize + random.nextInt(GameSettings.maxShipSize));
+                if (random.nextBoolean()) {
+                    ship.setVertical();
+                } else {
+                    ship.setHorizontal();
+                }
+                playerBoard.addShip(ship);
             } catch (InvalidPositionException exception) {
                 i--;
             }

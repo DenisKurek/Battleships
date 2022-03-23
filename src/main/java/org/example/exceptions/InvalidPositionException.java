@@ -1,6 +1,6 @@
 package org.example.exceptions;
 /**
- * klasa wychwytująca wyjątki o pozycji statku
+ * wyjątek rzucany w przypadku podania nielegalnej pozycji
  */
 public class InvalidPositionException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package org.example.backedn;
+package org.example.backend;
 
 import java.util.Random;
 
@@ -13,40 +13,40 @@ public class EnemyPlayer {
     /**
      * tablica przechowująca informację czy dane pole zostało już kliknięte
      */
-    private Boolean[][] clicked;
+    private Boolean[][] clickedCells;
     /**
      * tablica przechowująca wartość przypisaną danemu polu (gracz klika w pole o największej wartości)
      */
-    private int[][] value;
+    private int[][] valueOfCell;
 
     /**
      * funkcja wykonująca ruch na podanej planszy
      * @param board plansza, na której gracz wykona ruch
      * @return  TRUE, jeżeli gracz trafił w statek FALSE, jeżeli spudłował
      */
-    public Boolean make_move(Board board){
+    public Boolean makeMove(Board board){
         //inicializacja tablic wewnętrznych obiektu enemyPlayer
-        clicked = new Boolean[GameSettings.getBoardSize()][GameSettings.getBoardSize()];
-        value = new int[GameSettings.getBoardSize()][GameSettings.getBoardSize()];
-        for(int i=0;i<GameSettings.getBoardSize();i++) {
-            for (int j = 0; j < GameSettings.getBoardSize(); j++) {
-                value[i][j] = 0;
+        clickedCells = new Boolean[GameSettings.boardSize][GameSettings.boardSize];
+        valueOfCell = new int[GameSettings.boardSize][GameSettings.boardSize];
+        for(int i=0;i<GameSettings.boardSize;i++) {
+            for (int j = 0; j < GameSettings.boardSize; j++) {
+                valueOfCell[i][j] = 0;
             }
         }
-        for(int i=0;i<GameSettings.getBoardSize();i++){
-            for(int j=0;j<GameSettings.getBoardSize();j++){
+        for(int i=0;i<GameSettings.boardSize;i++){
+            for(int j=0;j<GameSettings.boardSize;j++){
                 if(board.getCell(i,j).clicked()){
                     //obiektów będących statkami nie traktujemy jako klikniętych
                     if(board.getCell(i,j).getState()== Cell.State.SHIP){
-                        clicked[i][j] = false;
+                        clickedCells[i][j] = false;
                         addValue(i,j,board);
                     }
                     else{
-                        clicked[i][j]=true;
+                        clickedCells[i][j]=true;
                     }
                 }
                 else{
-                    clicked[i][j]=false;
+                    clickedCells[i][j]=false;
                 }
             }
         }
@@ -54,8 +54,8 @@ public class EnemyPlayer {
         //symulowanie różnych ustawień statków na planszy
         for (int k = 0; k< NUMBER_OF_SYMULATED_BOARD_POSITIONS; k++){
             for(int i=0;i< board.getShips().size();i++) {
-                Ship ship = new Ship(random.nextInt(GameSettings.getBoardSize()),
-                        random.nextInt(GameSettings.getBoardSize()),
+                Ship ship = new Ship(random.nextInt(GameSettings.boardSize),
+                        random.nextInt(GameSettings.boardSize),
                         board.getShips().get(i).size);
                 if (random.nextBoolean()) {
                     ship.setVertical();
@@ -68,31 +68,31 @@ public class EnemyPlayer {
                     int y=ship.getY();
                     if(ship.isVertical()){
                         for (int ii=0;ii<ship.getSize();ii++,y++){
-                            value[x][y]++;
+                            valueOfCell[x][y]++;
                         }
                     }
                     else{
                         for (int ii=0;ii<ship.getSize();ii++,x++){
-                            value[x][y]++;
+                            valueOfCell[x][y]++;
                         }
                     }
                 }
 
             }
         }
-        int rek=0;
+        int rek=-1;
         int besI=0,bestY=0;
         //wybieranie pola z największą szansą na bycie statkiem
-        for(int i=0;i<GameSettings.getBoardSize();i++){
-            for(int j=0;j<GameSettings.getBoardSize();j++){
-                if(rek< value[i][j] && !board.getCell(i,j).isClicked){
-                    rek= value[i][j];
+        for(int i=0;i<GameSettings.boardSize;i++){
+            for(int j=0;j<GameSettings.boardSize;j++){
+                if(rek < valueOfCell[i][j] && !board.getCell(i,j).isClicked){
+                    rek= valueOfCell[i][j];
                     besI = i;
                     bestY = j;
                 }
             }
         }
-        return board.Shoot(besI,bestY);
+        return board.shoot(besI,bestY);
     }
 
     /**
@@ -103,31 +103,31 @@ public class EnemyPlayer {
      */
     private void addValue(int x, int y,Board board) {
         if(checkPosition(x,y+1)){
-            value[x][y+1]=10000;
+            valueOfCell[x][y+1]=10000;
         }
         if(checkPosition(x,y-1)){
-            value[x][y-1]=10000;
+            valueOfCell[x][y-1]=10000;
         }
         if(checkPosition(x+1,y)){
-            value[x+1][y]=10000;
+            valueOfCell[x+1][y]=10000;
         }
         if(checkPosition(x-1,y)){
-            value[x-1][y]=10000;
+            valueOfCell[x-1][y]=10000;
         }
         if(checkPosition(x-1,y)&&checkPosition(x+1,y)) {
             if (board.getCell(x - 1, y).isClicked && board.getCell(x - 1, y).getState() == Cell.State.SHIP) {
-                value[x + 1][y] = 20000;
+                valueOfCell[x + 1][y] = 20000;
             }
             if (board.getCell(x + 1, y).isClicked && board.getCell(x + 1, y).getState() == Cell.State.SHIP) {
-                value[x - 1][y] = 20000;
+                valueOfCell[x - 1][y] = 20000;
             }
         }
         if(checkPosition(x,y-1)&&checkPosition(x,y+1)) {
             if (board.getCell(x , y - 1).isClicked && board.getCell(x , y -1).getState() == Cell.State.SHIP) {
-                value[x][y+1] = 20000;
+                valueOfCell[x][y+1] = 20000;
             }
             if (board.getCell(x , y + 1).isClicked && board.getCell(x , y + 1).getState() == Cell.State.SHIP) {
-                value[x][y -1] = 20000;
+                valueOfCell[x][y -1] = 20000;
             }
         }
     }
@@ -143,14 +143,14 @@ public class EnemyPlayer {
         int y=ship.getY();
         if(isVertical){
             for (int i=0;i<ship.getSize();i++,y++){
-                if(!checkPosition(x,y) || clicked[x][y]){
+                if(!checkPosition(x,y) || clickedCells[x][y]){
                     return false;
                 }
             }
         }
         else{
             for (int i=0;i<ship.getSize();i++,x++){
-                if(!checkPosition(x,y) || clicked[x][y]){
+                if(!checkPosition(x,y) || clickedCells[x][y]){
                     return false;
                 }
             }
@@ -165,10 +165,10 @@ public class EnemyPlayer {
      * @return  TRUE jeżeli wartość jest legalna FALSE jeżeli nie
      */
     private boolean checkPosition(int x, int y) {
-        if(x<0 || x>= GameSettings.getBoardSize()){
+        if(x<0 || x>= GameSettings.boardSize){
             return false;
         }
-        if(y<0 || y>= GameSettings.getBoardSize()){
+        if(y<0 || y>= GameSettings.boardSize){
             return false;
         }
         return true;

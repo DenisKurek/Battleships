@@ -1,6 +1,4 @@
-package org.example.backedn;
-
-import java.lang.invoke.SwitchPoint;
+package org.example.backend;
 
 /**
  * klasa reprezenyująca komórkę na planszy

@@ -1,11 +1,10 @@
-package org.example.backedn;
+package org.example.backend;
 import org.example.exceptions.InvalidPositionException;
-import org.example.exceptions.ShipNotExistexception;
 
 import java.util.ArrayList;
 import java.util.List;
 /**
- * klasa prezentujaca Planszę do gry
+ * klasa prezentująca Planszę do gry
  */
 public class Board {
     /**
@@ -35,7 +34,7 @@ public class Board {
 
     /**
      * metoda zwracająca statki umieszcone na planszy
-     * @return lista poostałych statków
+     * @return lista powstałych statków
      */
     public List<Ship> getShips(){return ships;}
 
@@ -54,19 +53,19 @@ public class Board {
                 for (int i=0;i<ship.getSize();i++,y++){
                     cells[x][y].setShipReff(ship);
                     cells[x][y].setState(Cell.State.SHIP);
-                    changeNeighbState( x,y, Cell.State.NEAR_SHIP);
+                    changeNeighbourState( x,y, Cell.State.NEAR_SHIP);
                 }
             }
             else{
                 for (int i=0;i<ship.getSize();i++,x++){
                     cells[x][y].setShipReff(ship);
                     cells[x][y].setState(Cell.State.SHIP);
-                    changeNeighbState(x,y, Cell.State.NEAR_SHIP);
+                    changeNeighbourState(x,y, Cell.State.NEAR_SHIP);
                 }
             }
         }
         else{
-            // w przypadku gdy statku nie udalo się umieścić
+            // w przypadku gdy statku nie udało się umieścić
             ships.remove(ship);
             throw new InvalidPositionException();
         }
@@ -77,9 +76,10 @@ public class Board {
      * @param newX  nowa współrzędna x
      * @param newY  nowa współrzędna y
      * @param ship  obiekt typu Ship do dodania
-     * @param changePosition informacja czy obrucić statek przy przemieszczaniu
+     * @param changePosition informacja czy obrócić statek przy przemieszczaniu
+     * @return TRUE, jeżeli udało się przemieścić statek FALSE, jeżeli nie
      */
-    public void moveShip(int newX,int newY,Ship ship,boolean changePosition){
+    public boolean moveShip(int newX,int newY,Ship ship,boolean changePosition){
         // usunięcie statku z planszy
         removeShip(ship);
         ships.remove(ship);
@@ -112,16 +112,18 @@ public class Board {
                 }
             }
             addShip(ship);
+            return false;
         }
+        return true;
     }
 
     /**
      * strzelenie w daną pozycję na planszy
-     * @param x
-     * @param y
-     * @return
+     * @param x współrzędna x
+     * @param y współrzędna y
+     * @return TRUE, jeżeli trafiono w statek FALSE, jeżeli nie trafiono
      */
-    public Boolean Shoot(int x,int y) {
+    public Boolean shoot(int x, int y) {
         Cell cell = getCell(x, y);
         Ship ship = cell.get_ship();
         cell.click();
@@ -154,10 +156,10 @@ public class Board {
      */
     private void initialize(){
         ships = new ArrayList<Ship>();
-        this.cells = new Cell[GameSettings.getBoardSize()][GameSettings.getBoardSize()];
-        for (int i = 0; i < GameSettings.getBoardSize(); i++){
-            for (int j = 0; j < GameSettings.getBoardSize(); j++){
-                this.cells[i][j] = new Cell(i* GameSettings.getCellSize(), j* GameSettings.getCellSize(), GameSettings.getCellSize());
+        this.cells = new Cell[GameSettings.boardSize][GameSettings.boardSize];
+        for (int i = 0; i < GameSettings.boardSize; i++){
+            for (int j = 0; j < GameSettings.boardSize; j++){
+                this.cells[i][j] = new Cell(i* GameSettings.cellSize, j* GameSettings.cellSize, GameSettings.cellSize);
                 cells[i][j].setState(Cell.State.SEA);
             }
         }
@@ -174,14 +176,14 @@ public class Board {
             for (int i=0;i<ship.getSize();i++,y++){
                 cells[x][y].setShipReff(null);
                 cells[x][y].setState(Cell.State.SEA);
-                changeNeighbState( x,y, Cell.State.SEA);
+                changeNeighbourState( x,y, Cell.State.SEA);
             }
         }
         else{
             for (int i=0;i<ship.getSize();i++,x++){
                 cells[x][y].setShipReff(ship);
                 cells[x][y].setState(Cell.State.SEA);
-                changeNeighbState(x,y, Cell.State.SEA);
+                changeNeighbourState(x,y, Cell.State.SEA);
             }
         }
 
@@ -193,7 +195,7 @@ public class Board {
      * @param cellY współrzędna y pola
      * @param state stan do ustawienia
      */
-    private void changeNeighbState(int cellX , int cellY, Cell.State state) {
+    private void changeNeighbourState(int cellX , int cellY, Cell.State state) {
         for(int x=-1;x<2;x++){
             for(int y=-1;y<2;y++){
                 //sprawdzanie czy pozycja istnieje
@@ -245,10 +247,10 @@ public class Board {
      * @return  TRUE jeżeli wartość jest legalna FALSE jeżeli nie
      */
     private boolean checkPosition(int x, int y) {
-        if(x<0 || x>= GameSettings.getBoardSize()){
+        if(x<0 || x>= GameSettings.boardSize){
             return false;
         }
-        return y >= 0 && y < GameSettings.getBoardSize();
+        return y >= 0 && y < GameSettings.boardSize;
     }
 
     /**

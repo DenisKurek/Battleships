@@ -9,17 +9,33 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import org.example.backedn.Game;
-import org.example.fxImplementation.GameDrawer;
+import org.example.backend.Game;
+import org.example.view.GameDrawer;
 
 import java.io.IOException;
 
+/**
+ * klasa obsługująca rozstawienie statków na planszy gracza
+ */
 public class PrimaryController {
+    /**
+     * obiekt reprezentujący instancję gry
+     */
     private Game game;
+    /**
+     * miejsce, na którym zostaje narysowana plansza
+     */
     @FXML
     Pane pane;
+    /**
+     * przycisk przechodzący do kolejnej sceny
+     */
     @FXML
     Button beginButton;
+
+    /**
+     * metoda inicjalizująca wygląd sceny
+     */
     @FXML
     public void initialize() {
         game = new Game();
@@ -29,6 +45,12 @@ public class PrimaryController {
         gameDrawer.DrawPlayerBoard();
         gameDrawer.DrawShips();
     }
+
+    /**
+     * metoda rozpoczynająca właściwą grę w statki
+     * @param event miejsce kliknięcia przycisku button
+     * @throws IOException  rzucany, jeżeli nie uda się utworzyć obiektu fxlLoader
+     */
     @FXML
     public void beginGame(ActionEvent event) throws IOException {
         Stage stage;
@@ -43,30 +65,5 @@ public class PrimaryController {
             secondaryController.setGame(game);
             secondaryController.beginGame();
             stage.show();
-
-        /*secondaryController.setPlayerPane(Pane);
-        secondaryController.setEnemyPane();
-        secondaryController.();*/
-
     }
-
-    /*private void pressed(MouseEvent e , FxCell cell){
-        cell.getRectangle().setFill(Color.GREEN);
-    }
-
-    private void dragged(MouseEvent e ){
-       Node node = e.getPickResult().getIntersectedNode();
-       try {
-           Rectangle rectangle = (Rectangle) node;
-           rectangle.setFill(Color.YELLOW);
-       }
-       catch (Exception ignored){
-
-       }
-
-    }
-    private void dropped(MouseEvent e , Rectangle r){
-        r.setFill(Color.YELLOW);
-    }*/
-
 }

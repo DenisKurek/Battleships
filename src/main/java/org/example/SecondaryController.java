@@ -1,8 +1,7 @@
 package org.example;
 
-import java.util.Random;
-
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -10,65 +9,116 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import org.example.backedn.*;
-import org.example.fxImplementation.GameDrawer;
+import org.example.backend.*;
+import org.example.view.GameDrawer;
 
+/**
+ * klasa obsługująca rozgrywkę przeciwko sztucznej inteligencji
+ */
 public class SecondaryController {
+    /**
+     * obszar rysowania planszy gracza
+     */
     @FXML
     Pane playerPane;
+    /**
+     * obszar rysowania planszy przeciwnika
+     */
     @FXML
     Pane enemyPane;
+    /**
+     * obiekt przechowujący obszary służące do rysowania gry
+     */
     @FXML
     VBox box;
+    /**
+     * kontener przechowujący pozostałe statki przeciwnika
+     */
+    @FXML
+    VBox remainingEnemyShips;
+    /**
+     * kontener przechowujący pozostałe statki gracza
+     */
+    @FXML
+    VBox remainingPlayerShips;
+    /**
+     * przeciwnik gracza
+     */
     EnemyPlayer enemyPlayer = new EnemyPlayer();
+    /**
+     * egzemplarz klasy rysującej grę
+     */
+    GameDrawer gameDrawer;
+    /**
+     * egzemplarz klasy reprezentującej grę
+     */
+    Game game;
+
+    /**
+     * metoda rozpoczynająca grę
+     */
     @FXML
     public void beginGame() {
-        GameDrawer gameDrawer = new GameDrawer(game,playerPane,enemyPane);
-        GameDrawer.DrawPlayerBoard();
-        GameDrawer.DrawEnemyBoard();
-        for(int i=0;i<GameSettings.getBoardSize();i++){
-            for(int j=0;j<GameSettings.getBoardSize();j++){
+        this.gameDrawer = new GameDrawer(game,playerPane,enemyPane);
+        refreshGameState();
+        for(int i=0;i<GameSettings.boardSize;i++){
+            for(int j=0;j<GameSettings.boardSize;j++){
+                // kopie zmiennych wysyłane do funkcji
                 final int fJ=j,fI=i;
-                GameDrawer.getEnemyRectangle(i,j).setOnMouseClicked(mouseEvent->onclick(mouseEvent,fI,fJ));
+                gameDrawer.getEnemyRectangle(i,j).setOnMouseClicked(mouseEvent->onclick(mouseEvent,fI,fJ));
             }
         }
     }
 
-    private void onclick(MouseEvent mouseEvent, int i, int j) {
+    /**
+     * metoda obsługująca strzelanie do pól na planszy
+     * @param mouseEvent miejsce kliknięcia myszy
+     * @param x współrzędna x klikniętego pola
+     * @param y współrzędna y klikniętego pola
+     */
+    private void onclick(MouseEvent mouseEvent, int x, int y) {
         Rectangle rectangle = (Rectangle) mouseEvent.getSource();
         rectangle.setOnMouseClicked(null);
-        Random random = new Random();
-        Board playerboard=game.getPlayerBoard();
-        Board enemyboard=game.getEnemyBoard();
-        Boolean faliure = !game.getEnemyBoard().Shoot(i,j);
-        while(faliure){
-            if(!enemyPlayer.make_move(playerboard)){
+        Board playerBoard=game.getPlayerBoard();
+        Board enemyBoard=game.getEnemyBoard();
+        boolean failedShoot = !game.getEnemyBoard().shoot(x,y);
+        while(failedShoot){
+            if(!enemyPlayer.makeMove(playerBoard)){
                 break;
             }
-            GameDrawer.DrawPlayerBoard();
+            refreshGameState();
         }
-        for(int ii=0;ii<GameSettings.getBoardSize();ii++) {
-            for (int jj = 0; jj < GameSettings.getBoardSize(); jj++) {
+        for(int ii=0;ii<GameSettings.boardSize;ii++) {
+            for (int jj = 0; jj < GameSettings.boardSize; jj++) {
                 if(game.getEnemyBoard().getCell(ii,jj).clicked()){
-                    GameDrawer.getEnemyRectangle(ii,jj).setOnMouseClicked(mouseEvent1 -> {});
+                    gameDrawer.getEnemyRectangle(ii,jj).setOnMouseClicked(mouseEvent1 -> {});
                 }
             }
         }
-        GameDrawer.DrawEnemyBoard();
-        GameDrawer.DrawPlayerBoard();
-        if(playerboard.getShips().isEmpty()){
+        refreshGameState();
+        if(playerBoard.getShips().isEmpty()){
             endGame("Przegrałeś");
         }
-        if(enemyboard.getShips().isEmpty()){
+        if(enemyBoard.getShips().isEmpty()){
             endGame("Wygrałeś");
         }
     }
-    Game game;
+
+    /**
+     * metoda przypinająca referencję do egzemplarza klasy Game
+     * @param game  podpinany egzemplarz klasy Game
+     */
     public void setGame(Game game) {
         this.game = game;
     }
+
+    /**
+     * metoda wyświetlająca informacje o wyniku rozgrywki
+     * @param massage   wiadomość wyświetlana pod koniec gry
+     */
     public void endGame(String massage){
         box.getChildren().clear();
+        box.setAlignment(Pos.CENTER);
         Label label = new Label();
         label.setText(massage);
         label.setFont(new Font("Arial", 50));
@@ -79,5 +129,15 @@ public class SecondaryController {
             label.setTextFill(Color.RED);
         }
         box.getChildren().add(label);
-    };
+    }
+
+    /**
+     * metoda refreshable scenę gry
+     */
+    private void refreshGameState() {
+        gameDrawer.DrawPlayerBoard();
+        gameDrawer.drawRemainingShips(remainingPlayerShips,game.getPlayerBoard());
+        gameDrawer.DrawEnemyBoard();
+        gameDrawer.drawRemainingShips(remainingEnemyShips,game.getEnemyBoard());
+    }
 }

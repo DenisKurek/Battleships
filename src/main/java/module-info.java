@@ -4,8 +4,8 @@ module org.example {
 
     opens org.example to javafx.fxml;
     exports org.example;
-    exports org.example.backedn;
-    opens org.example.backedn to javafx.fxml;
+    exports org.example.backend;
+    opens org.example.backend to javafx.fxml;
     exports org.example.exceptions;
     opens org.example.exceptions to javafx.fxml;
 }
