@@ -2,10 +2,10 @@ module org.example {
     requires javafx.controls;
     requires javafx.fxml;
 
-    opens org.example to javafx.fxml;
-    exports org.example;
-    exports org.example.backend;
-    opens org.example.backend to javafx.fxml;
-    exports org.example.exceptions;
-    opens org.example.exceptions to javafx.fxml;
+    opens pl.deniskurek to javafx.fxml;
+    exports pl.deniskurek;
+    exports pl.deniskurek.backend;
+    opens pl.deniskurek.backend to javafx.fxml;
+    exports pl.deniskurek.exceptions;
+    opens pl.deniskurek.exceptions to javafx.fxml;
 }
