@@ -1,5 +1,7 @@
 package org.example.backend;
 
+import org.example.exceptions.AlreadyDeadException;
+
 import java.util.Random;
 
 /**
@@ -92,7 +94,12 @@ public class EnemyPlayer {
                 }
             }
         }
-        return board.shoot(besI,bestY);
+        try {
+            return board.shoot(besI, bestY);
+        }
+        catch(AlreadyDeadException e){
+            return makeMove(board);
+        }
     }
 
     /**

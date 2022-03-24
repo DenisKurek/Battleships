@@ -24,7 +24,7 @@
                   <Pane fx:id="playerPane" prefHeight="400.0" prefWidth="400.0" />
                </children>
             </VBox>
-            <VBox fx:id="remainingPlayerShips" alignment="TOP_CENTER" prefHeight="300.0" prefWidth="200.0" spacing="10.0" />
+            <VBox fx:id="remainingPlayerShips" alignment="TOP_CENTER" prefHeight="300.0" prefWidth="200.0" spacing="5.0" />
          </children>
       </HBox>
       <HBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="1000.0" spacing="50.0">
@@ -39,7 +39,7 @@
                   <Pane fx:id="enemyPane" prefHeight="400.0" prefWidth="400.0" />
                </children>
             </VBox>
-            <VBox fx:id="remainingEnemyShips" alignment="TOP_CENTER" prefHeight="300.0" prefWidth="200.0" spacing="10.0" />
+            <VBox fx:id="remainingEnemyShips" alignment="TOP_CENTER" prefHeight="300.0" prefWidth="200.0" spacing="5.0" />
          </children>
       </HBox>
    </children>

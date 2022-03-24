@@ -48,7 +48,7 @@ public class Game {
             try {
                 Ship ship = new Ship(random.nextInt(GameSettings.boardSize),
                         random.nextInt(GameSettings.boardSize),
-                        playerBoard.getShips().get(i).size);
+                        GameSettings.sizesOfShips.get(i));
                 if (random.nextBoolean()) {
                     ship.setVertical();
                 } else {
@@ -70,7 +70,7 @@ public class Game {
             try {
                 Ship ship = new Ship(random.nextInt(GameSettings.boardSize),
                         random.nextInt(GameSettings.boardSize),
-                        GameSettings.minShipSize + random.nextInt(GameSettings.maxShipSize));
+                        GameSettings.sizesOfShips.get(i));
                 if (random.nextBoolean()) {
                     ship.setVertical();
                 } else {
