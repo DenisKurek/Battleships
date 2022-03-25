@@ -64,8 +64,8 @@ public class SecondaryController {
     public void beginGame() {
         this.gameDrawer = new GameDrawer(game,playerPane,enemyPane);
         refreshGameState();
-        for(int i = 0; i< GameSettings.boardSize; i++){
-            for(int j=0;j<GameSettings.boardSize;j++){
+        for(int i = 0; i< GameSettings.BOARD_SIZE; i++){
+            for(int j = 0; j<GameSettings.BOARD_SIZE; j++){
                 // kopie zmiennych wysyłane do funkcji
                 final int fJ=j,fI=i;
                 gameDrawer.getEnemyRectangle(i,j).setOnMouseClicked(mouseEvent->onclick(mouseEvent,fI,fJ));
@@ -91,8 +91,8 @@ public class SecondaryController {
             }
             refreshGameState();
         }
-        for(int ii=0;ii<GameSettings.boardSize;ii++) {
-            for (int jj = 0; jj < GameSettings.boardSize; jj++) {
+        for(int ii = 0; ii<GameSettings.BOARD_SIZE; ii++) {
+            for (int jj = 0; jj < GameSettings.BOARD_SIZE; jj++) {
                 if(game.getEnemyBoard().getCell(ii,jj).clicked()){
                     gameDrawer.getEnemyRectangle(ii,jj).setOnMouseClicked(mouseEvent1 -> {});
                 }

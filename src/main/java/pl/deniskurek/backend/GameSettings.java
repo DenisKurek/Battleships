@@ -1,6 +1,5 @@
 package pl.deniskurek.backend;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -11,17 +10,17 @@ public interface GameSettings {
     /**
      * rozmiar planszy
      */
-    int boardSize =10;
+    int BOARD_SIZE =10;
     /**
      * lista rozstawianych statków
      */
-    ArrayList<Integer> sizesOfShips = new ArrayList<Integer>(Arrays.asList(4,3,3,2,2,2,1,1,1,1));
+    ArrayList<Integer> SIZES_0F_SHIPS = new ArrayList<Integer>(Arrays.asList(4,3,3,2,2,2,1,1,1,1));
     /**
      * ilość generowanych statków
      */
-    int numberOfShips = sizesOfShips.size();
+    int NUMBER_OF_SHIPS = SIZES_0F_SHIPS.size();
     /**
      * rozmiar pola na planszy
      */
-    double cellSize = 40;
+    double CELL_SIZE = 40;
 }

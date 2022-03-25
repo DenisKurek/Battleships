@@ -156,10 +156,10 @@ public class Board {
      */
     private void initialize(){
         ships = new ArrayList<Ship>();
-        this.cells = new Cell[GameSettings.boardSize][GameSettings.boardSize];
-        for (int i = 0; i < GameSettings.boardSize; i++){
-            for (int j = 0; j < GameSettings.boardSize; j++){
-                this.cells[i][j] = new Cell(i* GameSettings.cellSize, j* GameSettings.cellSize, GameSettings.cellSize);
+        this.cells = new Cell[GameSettings.BOARD_SIZE][GameSettings.BOARD_SIZE];
+        for (int i = 0; i < GameSettings.BOARD_SIZE; i++){
+            for (int j = 0; j < GameSettings.BOARD_SIZE; j++){
+                this.cells[i][j] = new Cell(i* GameSettings.CELL_SIZE, j* GameSettings.CELL_SIZE, GameSettings.CELL_SIZE);
                 cells[i][j].setState(Cell.State.SEA);
             }
         }
@@ -247,10 +247,10 @@ public class Board {
      * @return  TRUE jeżeli wartość jest legalna FALSE jeżeli nie
      */
     private boolean checkPosition(int x, int y) {
-        if(x<0 || x>= GameSettings.boardSize){
+        if(x<0 || x>= GameSettings.BOARD_SIZE){
             return false;
         }
-        return y >= 0 && y < GameSettings.boardSize;
+        return y >= 0 && y < GameSettings.BOARD_SIZE;
     }
 
     /**

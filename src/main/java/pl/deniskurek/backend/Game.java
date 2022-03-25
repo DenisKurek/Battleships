@@ -44,11 +44,11 @@ public class Game {
      */
     private void generateEnemyBoard() {
         Random random = new Random();
-        for(int i=0;i< GameSettings.numberOfShips;i++) {
+        for(int i = 0; i< GameSettings.NUMBER_OF_SHIPS; i++) {
             try {
-                Ship ship = new Ship(random.nextInt(GameSettings.boardSize),
-                        random.nextInt(GameSettings.boardSize),
-                        GameSettings.sizesOfShips.get(i));
+                Ship ship = new Ship(random.nextInt(GameSettings.BOARD_SIZE),
+                        random.nextInt(GameSettings.BOARD_SIZE),
+                        GameSettings.SIZES_0F_SHIPS.get(i));
                 if (random.nextBoolean()) {
                     ship.setVertical();
                 } else {
@@ -66,11 +66,11 @@ public class Game {
      */
     private void generatePlayerBoard() {
         Random random = new Random();
-        for(int i=0;i< GameSettings.numberOfShips;i++) {
+        for(int i = 0; i< GameSettings.NUMBER_OF_SHIPS; i++) {
             try {
-                Ship ship = new Ship(random.nextInt(GameSettings.boardSize),
-                        random.nextInt(GameSettings.boardSize),
-                        GameSettings.sizesOfShips.get(i));
+                Ship ship = new Ship(random.nextInt(GameSettings.BOARD_SIZE),
+                        random.nextInt(GameSettings.BOARD_SIZE),
+                        GameSettings.SIZES_0F_SHIPS.get(i));
                 if (random.nextBoolean()) {
                     ship.setVertical();
                 } else {

@@ -28,15 +28,15 @@ public class EnemyPlayer {
      */
     public Boolean makeMove(Board board){
         //inicializacja tablic wewnętrznych obiektu enemyPlayer
-        clickedCells = new Boolean[GameSettings.boardSize][GameSettings.boardSize];
-        valueOfCell = new int[GameSettings.boardSize][GameSettings.boardSize];
-        for(int i=0;i<GameSettings.boardSize;i++) {
-            for (int j = 0; j < GameSettings.boardSize; j++) {
+        clickedCells = new Boolean[GameSettings.BOARD_SIZE][GameSettings.BOARD_SIZE];
+        valueOfCell = new int[GameSettings.BOARD_SIZE][GameSettings.BOARD_SIZE];
+        for(int i = 0; i<GameSettings.BOARD_SIZE; i++) {
+            for (int j = 0; j < GameSettings.BOARD_SIZE; j++) {
                 valueOfCell[i][j] = 0;
             }
         }
-        for(int i=0;i<GameSettings.boardSize;i++){
-            for(int j=0;j<GameSettings.boardSize;j++){
+        for(int i = 0; i<GameSettings.BOARD_SIZE; i++){
+            for(int j = 0; j<GameSettings.BOARD_SIZE; j++){
                 if(board.getCell(i,j).clicked()){
                     //obiektów będących statkami nie traktujemy jako klikniętych
                     if(board.getCell(i,j).getState()== Cell.State.SHIP){
@@ -56,8 +56,8 @@ public class EnemyPlayer {
         //symulowanie różnych ustawień statków na planszy
         for (int k = 0; k< NUMBER_OF_SYMULATED_BOARD_POSITIONS; k++){
             for(int i=0;i< board.getShips().size();i++) {
-                Ship ship = new Ship(random.nextInt(GameSettings.boardSize),
-                        random.nextInt(GameSettings.boardSize),
+                Ship ship = new Ship(random.nextInt(GameSettings.BOARD_SIZE),
+                        random.nextInt(GameSettings.BOARD_SIZE),
                         board.getShips().get(i).size);
                 if (random.nextBoolean()) {
                     ship.setVertical();
@@ -85,8 +85,8 @@ public class EnemyPlayer {
         int rek=-1;
         int besI=0,bestY=0;
         //wybieranie pola z największą szansą na bycie statkiem
-        for(int i=0;i<GameSettings.boardSize;i++){
-            for(int j=0;j<GameSettings.boardSize;j++){
+        for(int i = 0; i<GameSettings.BOARD_SIZE; i++){
+            for(int j = 0; j<GameSettings.BOARD_SIZE; j++){
                 if(rek < valueOfCell[i][j] && !board.getCell(i,j).isClicked){
                     rek= valueOfCell[i][j];
                     besI = i;
@@ -172,10 +172,10 @@ public class EnemyPlayer {
      * @return  TRUE jeżeli wartość jest legalna FALSE jeżeli nie
      */
     private boolean checkPosition(int x, int y) {
-        if(x<0 || x>= GameSettings.boardSize){
+        if(x<0 || x>= GameSettings.BOARD_SIZE){
             return false;
         }
-        if(y<0 || y>= GameSettings.boardSize){
+        if(y<0 || y>= GameSettings.BOARD_SIZE){
             return false;
         }
         return true;

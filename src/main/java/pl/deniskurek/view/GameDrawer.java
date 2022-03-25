@@ -36,11 +36,11 @@ public class GameDrawer {
     /**
      * stała przechowująca rozmiar planszy
      */
-    final int BOARD_SIZE = GameSettings.boardSize;
+    final int BOARD_SIZE = GameSettings.BOARD_SIZE;
     /**
      * stałą przechowująca rozmiar poszczególnych pól
      */
-    final double CELL_SIZE = GameSettings.cellSize;
+    final double CELL_SIZE = GameSettings.CELL_SIZE;
 
     /**
      * konstruktor klasy game Drawer
@@ -133,7 +133,7 @@ public class GameDrawer {
         ArrayList<Ship> ships = (ArrayList<Ship>) board.getShips();
         Collections.sort(ships);
         for (Ship ship:ships) {
-            Rectangle rectangle = new Rectangle(GameSettings.cellSize*ship.getSize(),GameSettings.cellSize,
+            Rectangle rectangle = new Rectangle(GameSettings.CELL_SIZE *ship.getSize(),GameSettings.CELL_SIZE,
                     Color.GREEN);
             box.getChildren().add(rectangle);
         }

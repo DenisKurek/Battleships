@@ -84,24 +84,24 @@ public class ShipMouseEventSetter {
      */
     private static void released(MouseEvent mouseEvent, FxShip fxShip,Board board,GameDrawer gameDrawer) {
         draggedRectangle=null;
-        int newX =(int)(mouseEvent.getX()/ GameSettings.cellSize);
-        int newY =(int)(mouseEvent.getY()/GameSettings.cellSize);
+        int newX =(int)(mouseEvent.getX()/ GameSettings.CELL_SIZE);
+        int newY =(int)(mouseEvent.getY()/GameSettings.CELL_SIZE);
         // sprawdzenie, czy pozycja myszy jest legalna
         if(newX<0){newX=0;}
         if(newY<0){newY=0;}
-        if(newX>= GameSettings.boardSize){newX= GameSettings.boardSize-1;}
-        if(newY>= GameSettings.boardSize){newY= GameSettings.boardSize-1;}
+        if(newX>= GameSettings.BOARD_SIZE){newX= GameSettings.BOARD_SIZE -1;}
+        if(newY>= GameSettings.BOARD_SIZE){newY= GameSettings.BOARD_SIZE -1;}
 
 
         if (board.moveShip(newX,newY,fxShip.getShip(), positionChanged)){
             //System.out.println(newX+" "+newY);
-            fxShip.getRectangle().setX(newX * GameSettings.cellSize);
-            fxShip.getRectangle().setY(newY * GameSettings.cellSize);
+            fxShip.getRectangle().setX(newX * GameSettings.CELL_SIZE);
+            fxShip.getRectangle().setY(newY * GameSettings.CELL_SIZE);
         }
         else{
             //System.out.println(newX+" "+newY+"old = "+fxship.getShip().getX()+" "+fxship.getShip().getY());
-            fxShip.getRectangle().setX(oldX * GameSettings.cellSize);
-            fxShip.getRectangle().setY(oldY * GameSettings.cellSize);
+            fxShip.getRectangle().setX(oldX * GameSettings.CELL_SIZE);
+            fxShip.getRectangle().setY(oldY * GameSettings.CELL_SIZE);
         }
         positionChanged =false;
         gameDrawer.DrawPlayerBoard();
