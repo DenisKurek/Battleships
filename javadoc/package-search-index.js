@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"m":"org.example","l":"pl.deniskurek"},{"m":"org.example","l":"pl.deniskurek.backend"},{"m":"org.example","l":"pl.deniskurek.exceptions"},{"m":"org.example","l":"pl.deniskurek.view"}]
