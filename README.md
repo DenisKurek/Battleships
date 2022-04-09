@@ -1,29 +1,51 @@
-# README #
+Gra w statki
+====================
+Projekt którego efektem końcowym jest aplikacja umożliwiająca zmierzenie się użytkownikowi 
+z komputerem w kultową grę w statki
+- - -
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Opis funkcjonalny
+================================
+Instrukcja obsługi dla użytkownika
 
-### What is this repository for? ###
+Okno wyświetlające plansze na której gracz przygotowuje się do rozgrywki
+![Alt text](img.png)
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Okno wyświetlające przebieg gry
+![img_1.png](img_1.png)
 
-### How do I get set up? ###
+Okno wyświetlające się po wygranej rozgrywce
+![img_2.png](img_2.png)
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Okno wyświetlające się po przzegranej rozgrywce
+![img_3.png](img_3.png)
+- - -
 
-### Contribution guidelines ###
+Wykorzystane narzędzia 
+================================
 
-* Writing tests
-* Code review
-* Other guidelines
+IntelliJ IDEA - środowisko programistyczne w którym powstał projekt
 
-### Who do I talk to? ###
+Java - obiektowy język programowania za pomocą którego projekt został napisany
 
-* Repo owner or admin
-* Other community or team contact
+JavaFX - technologia która została wykorzystana aby program był reprezentowany w formie Rich Internet Application
+
+---
+Podział zadań
+================================
+Denis Kurek  | Igor Demczak
+------------- | -------------
+ javaFX | dokumentacja
+ backend | Javadoc
+ . | .
+ . | .
+ . | .
+ . | .
+ . | .
+
+
+
+
+
+
+
