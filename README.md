@@ -17,7 +17,7 @@ Okno wyświetlające przebieg gry
 Okno wyświetlające się po wygranej rozgrywce
 ![img_2.png](img_2.png)
 
-Okno wyświetlające się po przzegranej rozgrywce
+Okno wyświetlające się po przegranej rozgrywce
 ![img_3.png](img_3.png)
 - - -
 
@@ -35,13 +35,9 @@ Podział zadań
 ================================
 Denis Kurek  | Igor Demczak
 ------------- | -------------
- javaFX | dokumentacja
- backend | Javadoc
- . | .
- . | .
- . | .
- . | .
- . | .
+ Utworzenie repozytorium | Interface użytkownika
+ Utworzenie klas z beckend | Instrukcja
+ Logika gry | Dokumentacja
 
 
 
