@@ -10,6 +10,8 @@ Instrukcja obsługi dla użytkownika
 
 aby rozpocząć grę uruchom plik out/artifacts/battleships_jar/battleships.jar
 
+W przypadku wystąpienia błędu prosze zaktualizowac javę do najnowszej wersji 
+
 Okno wyświetlające plansze na której gracz przygotowuje się do rozgrywki
 ![Alt text](img.png)
 
